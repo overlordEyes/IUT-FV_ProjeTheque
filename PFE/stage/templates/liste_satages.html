@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Liste des stages</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Lieu</th>
+                    <th>Raison sociale</th>
+                    <th>Encadreur académique</th>
+                    <th>Étudiant</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stage in stages %}
+                    <tr>
+                        <td>{{ stage.lieu }}</td>
+                        <td>{{ stage.raison_sociale }}</td>
+                        <td>{{ stage.encadreur_academique }}</td>
+                        <td>{{ stage.etudiant }}</td>
+                        <td>{{ stage.date }}</td>
+                        <td>
+                            <a href="{% url 'stage_detail' stage.pk %}" class="btn btn-primary">Détails</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

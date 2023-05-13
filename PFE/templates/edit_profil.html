@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Modifier le profil</h2>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Champ de saisie pour le nom -->
+        <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="{{ form_data.nom }}">
+        </div>
+        <!-- Champ de saisie pour le prénom -->
+        <div class="form-group">
+            <label for="prenom">Prénom :</label>
+            <input type="text" class="form-control" id="prenom" name="prenom" value="{{ form_data.prenom }}">
+        </div>
+        {% if user_type == 'etudiant' %}
+        <!-- Champs supplémentaires pour les étudiants -->
+        <div class="form-group">
+            <label for="departement">Département :</label>
+            <select class="form-control" id="departement" name="departement">
+                {% for departement in departements %}
+                <option value="{{ departement.id }}">{{ departement.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="cursus">Cursus :</label>
+            <select class="form-control" id="cursus" name="cursus">
+                {% for cursus in cursus_list %}
+                <option value="{{ cursus.id }}">{{ cursus.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% elif user_type == 'administration' %}
+        <!-- Champs supplémentaires pour les membres de l'administration -->
+        <div class="form-group">
+            <label for="role">Rôle :</label>
+            <select class="form-control" id="role" name="role">
+                {% for role in roles %}
+                <option value="{{ role.id }}">{{ role.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% elif user_type == 'visiteur' %}
+        <!-- Champs supplémentaires pour les visiteurs -->
+        <div class="form-group">
+            <label for="newsletter">Inscription à la newsletter :</label>
+            <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" {% if form_data.newsletter %}checked{% endif %}>
+        </div>
+        {% endif %}
+        <!-- Ajoutez d'autres champs de formulaire selon vos besoins -->
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Liens CDN pour les fichiers JS de Bootstrap et autres animations -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.1.1/dist/scrollreveal.min.js"></script>
+
+<!-- Script pour l'animation -->
+<script>
+    ScrollReveal().reveal('.container', { delay: 200, distance: '50px', duration: 1000 });
+</script>
+{% endblock %}

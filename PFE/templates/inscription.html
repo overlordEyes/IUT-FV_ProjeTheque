@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Inscription</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Nom d'utilisateur</label>
+                            {{ form.nom }}
+                            {% if errors.nom %}
+                                <p class="text-danger">{{ errors.nom }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">login</label>
+                            {{ form.username }}
+                            {% if errors.username %}
+                                <p class="text-danger">{{ errors.username }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_mail" class="form-label">Adresse Email</label>
+                            {{ form.email}}
+                            {% if errors.email %}
+                                <p class="text-danger">{{ errors.email }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Mot de passe</label>
+                            {{ form.password1 }}
+                            {% if errors.password1 %}
+                                <p class="text-danger">{{ errors.password1 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password2" class="form-label">Confirmer le mot de passe</label>
+                            {{ form.password2 }}
+                            {% if errors.nom %}
+                                <p class="text-danger">{{ errors.password2 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_type_utilisateur" class="form-label">Type d'utilisateur</label>
+                            {{ form.type_utilisateur }}
+                            {% if errors.type_utilisateur %}
+                                <p class="text-danger">{{ errors.type_utilisateur }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3" id="departementField" style="display: none;">
+                            <label for="id_department" class="form-label">Département</label>
+                            {{ form.department }}
+                            {% if errors.department %}
+                                <p class="text-danger">{{ errors.department }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3" id="levelField" style="display: none;">
+                            <label for="id_level" class="form-label">Niveau</label>
+                            {{ form.level }}
+                            {% if errors.level %}
+                                <p class="text-danger">{{ errors.level }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3" id="cursusField" style="display: none;">
+                            <label for="id_cursus" class="form-label">Cursus</label>
+                            {{ form.cursus }}
+                            {% if errors.cursus %}
+                                <p class="text-danger">{{ errors.cursus }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3" id="roleField" style="display: none;">
+                            <label for="id_role" class="form-label">Rôle</label>
+                            {{ form.role }}
+                            {% if errors.role %}
+                                <p class="text-danger">{{ errors.role }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.newsletter_subscription }}
+                            <label class="form-check-label" for="id_newsletter_subscription">
+                                S'abonner à la newsletter
+                            </label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_photo_profil" class="form-label">Photo de profil. taille inferrieur a 5Mo</label>
+                            {{ form.photo_profil }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <p>Déjà inscrit ? <a href="{% url 'connexion' %}">Connectez-vous</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var typeUtilisateurField = document.getElementById("id_type_utilisateur");
+        var departementField = document.getElementById("departementField");
+        var levelField = document.getElementById("levelField");
+        var cursusField = document.getElementById("cursusField");
+        var roleField = document.getElementById("roleField");
+        
+        typeUtilisateurField.addEventListener("change", function() {
+            var selectedType = typeUtilisateurField.value;
+            
+            if (selectedType === "et") {
+                departementField.style.display = "block";
+                levelField.style.display = "block";
+                cursusField.style.display = "block";
+                roleField.style.display = "none";
+           
+            } else if (selectedType === "ad") {
+                departementField.style.display = "none";
+                levelField.style.display = "none";
+                cursusField.style.display = "none";
+                roleField.style.display = "block";
+            } else {
+                departementField.style.display = "none";
+                levelField.style.display = "none";
+                cursusField.style.display = "none";
+                roleField.style.display = "none";
+            }
+        });
+    });
+</script>
+
+{% endblock %}

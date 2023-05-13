@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Ajouter un stage</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="mb-3">
+      <label for="{{ form.etudiant.id_for_label }}" class="form-label">{{ form.etudiant.label }}</label>
+      {{ form.etudiant }}
+      {{ form.etudiant.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.nom_de_l_entreprise.id_for_label }}" class="form-label">{{ form.nom_de_l_entreprise.label }}</label>
+      {{ form.nom_de_l_entreprise }}
+      {{ form.nom_de_l_entreprise.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.contact_email.id_for_label }}" class="form-label">{{ form.contact_email.label }}</label>
+      {{ form.contact_email }}
+      {{ form.contact_email.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.contact_telephone.id_for_label }}" class="form-label">{{ form.contact_telephone.label }}</label>
+      {{ form.contact_telephone }}
+      {{ form.contact_telephone.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.attestation_fin_stage.id_for_label }}" class="form-label">{{ form.attestation_fin_stage.label }}</label>
+      {{ form.attestation_fin_stage }}
+      {{ form.attestation_fin_stage.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.encadreur.id_for_label }}" class="form-label">{{ form.encadreur.label }}</label>
+      {{ form.encadreur }}
+      {{ form.encadreur.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.rapport_stage.id_for_label }}" class="form-label">{{ form.rapport_stage.label }}</label>
+      {{ form.rapport_stage }}
+      {{ form.rapport_stage.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.coordonnees_gps.id_for_label }}" class="form-label">{{ form.coordonnees_gps.label }}</label>
+      {{ form.coordonnees_gps }}
+      {{ form.coordonnees_gps.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.nombre_stagiaires_recus.id_for_label }}" class="form-label">{{ form.nombre_stagiaires_recus.label }}</label>
+      {{ form.nombre_stagiaires_recus }}
+      {{ form.nombre_stagiaires_recus.errors }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.date_de_preference.id_for_label }}" class="form-label">{{ form.date_de_preference.label }}</label>
+      {{ form.date_de_preference }}
+      {{ form.date_de_preference.errors }}
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+  </form>
+</div>
+{% endblock %}
