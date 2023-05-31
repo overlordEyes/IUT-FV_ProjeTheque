@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4 class="card-title">Mon Profile</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{ user.photo_profil.url }}" class="img-fluid" alt="Photo de profil" height="200px" width="200px">
+        </div>
+        <div class="col-md-8">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>Nom d'utilisateur:</strong> {{ user.username }}
+            </li>
+            <li class="list-group-item">
+              <strong>Email:</strong> {{ user.email }}
+            </li>
+            <li class="list-group-item">
+              <strong>Type d'utilisateur:</strong> {{ user.get_type_utilisateur_display }}
+            </li>
+            {% if user.type_utilisateur == 'et' %}
+            <li class="list-group-item">
+              <strong>Département:</strong> {{ user.get_department_display }}
+            </li>
+            <li class="list-group-item">
+              <strong>Niveau:</strong> {{ user.get_level_display }}
+            </li>
+            <li class="list-group-item">
+              <strong>Cursus:</strong> {{ user.get_cursus_display }}
+            </li>
+            {% if user.type_utilisateur == 'et' %}
+            <li class="list-group-item">
+                <strong>Encadreur : </strong> {{ user.stage.encadreur }}
+            </li>
+            {% endif %}
+            {% elif user.type_utilisateur == 'ad' %}
+            <li class="list-group-item">
+              <strong>Rôle:</strong> {{ user.get_role_display }}
+            </li>
+            {% endif %}
+            <li class="list-group-item">
+              <strong>Abonnement à la newsletter:</strong> {% if user.newsletter_subscription %}Oui{% else %}Non{% endif %}
+            </li>
+            <li class="list-group-item">
+              {% if user.type_utilisateur == 'et' %}
+                {% if user.stage %}
+                  <a href="{% url 'modifier-stage' user.stage.id %}">Modifier mon stage</a>
+                  <a href="{% url 'supprimer-stage' user.stage.id %}">Supprimer mon stage</a>
+                  <a href="{% url 'details-stage' user.stage.id %}">Détails de mon stage</a>
+                {% else %}
+                  <a href="{% url 'creer-stage' %}">Créer les informations du stage</a>
+                {% endif %}
+              {% endif %}
+            </li>
+            <!-- Ajoutez ici d'autres informations spécifiques à l'utilisateur -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

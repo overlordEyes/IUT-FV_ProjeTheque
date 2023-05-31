@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">Username or Email</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                            {{ form.password }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                    <a href="{% url 'inscription' %}">Inscription</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<!-- Animation pour une expérience utilisateur attrayante -->
+<script>
+    // Fonction pour ajouter une classe CSS lors du redimensionnement de la fenêtre
+    function addResponsiveClass() {
+        var container = document.querySelector('.container');
+        if (window.innerWidth < 576) {
+            container.classList.add('container-fluid');
+        } else {
+            container.classList.remove('container-fluid');
+        }
+    }
+
+    // Appel de la fonction lors du chargement initial et du redimensionnement de la fenêtre
+    window.addEventListener('DOMContentLoaded', addResponsiveClass);
+    window.addEventListener('resize', addResponsiveClass);
+</script>
+{% endblock %}

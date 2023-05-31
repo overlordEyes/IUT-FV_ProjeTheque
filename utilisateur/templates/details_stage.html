@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4 class="card-title">Détails du stage</h4>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item"><strong>Entreprise:</strong> {{ stage.entreprise }}</li>
+        <li class="list-group-item"><strong>Raison sociale:</strong> {{ stage.raison_sociale }}</li>
+        <li class="list-group-item"><strong>Contact email:</strong> {{ stage.contact_email }}</li>
+        <li class="list-group-item"><strong>Contact téléphone:</strong> {{ stage.contact_telephone }}</li>
+        <li class="list-group-item"><strong>Attestation de fin de stage:</strong> {% if stage.attestation_fin_stage %}<a href="{{ stage.attestation_fin_stage.url }}">Télécharger</a>{% else %}Non disponible{% endif %}</li>
+        <!-- Ajoutez ici les autres détails spécifiques à votre modèle Stage -->
+      </ul>
+      <a href="{% url 'modifier-stage' user.stage.id %}" class="btn btn-primary">Modifier</a>
+      <a href="{% url 'supprimer-stage' user.stage.id %}" class="btn btn-danger">Supprimer</a>
+      <a href="{% url 'profile' %}" class="btn btn-secondary">Retour</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

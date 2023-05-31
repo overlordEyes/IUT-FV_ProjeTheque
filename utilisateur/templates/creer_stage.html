@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Créer un stage</h1>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.entreprise.id_for_label }}">Entreprise</label>
+        {{ form.entreprise }}
+        {% if form.entreprise.errors %}
+          <small class="form-text text-danger">{{ form.entreprise.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.raison_sociale.id_for_label }}">Raison sociale</label>
+        {{ form.raison_sociale }}
+        {% if form.raison_sociale.errors %}
+          <small class="form-text text-danger">{{ form.raison_sociale.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.contact_email.id_for_label }}">Contact Email</label>
+        {{ form.contact_email }}
+        {% if form.contact_email.errors %}
+          <small class="form-text text-danger">{{ form.contact_email.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.contact_telephone.id_for_label }}">Contact Téléphone</label>
+        {{ form.contact_telephone }}
+        {% if form.contact_telephone.errors %}
+          <small class="form-text text-danger">{{ form.contact_telephone.errors }}</small>
+        {% endif %}
+      </div>
+     <div class="form-group">
+  <label for="id_encadreur">Encadreur :</label>
+  {{ form.encadreur }}
+</div>
+
+
+
+      <div class="form-group">
+        <label for="{{ form.attestation_fin_stage.id_for_label }}">Attestation de fin de stage</label>
+        {{ form.attestation_fin_stage }}
+        {% if form.attestation_fin_stage.errors %}
+          <small class="form-text text-danger">{{ form.attestation_fin_stage.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.rapport_stage.id_for_label }}">Rapport de stage</label>
+        {{ form.rapport_stage }}
+        {% if form.rapport_stage.errors %}
+          <small class="form-text text-danger">{{ form.rapport_stage.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.date_stage.id_for_label }}">Date du stage</label>
+        <div class="input-group date" id="datePicker" data-target-input="nearest">
+          {{ form.date_stage }}
+        </div>
+        {% if form.date_stage.errors %}
+          <small class="form-text text-danger">{{ form.date_stage.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.longitude.id_for_label }}">Longitude</label>
+        {{ form.longitude }}
+        {% if form.longitude.errors %}
+          <small class="form-text text-danger">{{ form.longitude.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.latitude.id_for_label }}">Latitude</label>
+        {{ form.latitude }}
+        {% if form.latitude.errors %}
+          <small class="form-text text-danger">{{ form.latitude.errors }}</small>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('datePicker').datetimepicker({
+        format: 'YYYY-MM-DD',
+        icons: {
+          time: 'fa fa-clock',
+          date: 'fa fa-calendar',
+          up: 'fa fa-chevron-up',
+          down: 'fa fa-chevron-down',
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-calendar-check-o',
+          clear: 'fa fa-trash',
+          close: 'fa fa-times'
+        }
+      });
+    });
+  </script>
+{% endblock %}
