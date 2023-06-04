@@ -4,14 +4,25 @@ from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser, Stage
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.gis.forms import PointField
 
+
+class GPSButtonWidget(forms.Widget):
+    template_name = 'gps_button_widget.html'  # Chemin vers le template HTML du bouton GPS
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['button_id'] = f"{attrs['id']}_button"  # ID du bouton GPS
+        return context
 
 class StageForm(forms.ModelForm):
-    encadreur = forms.ModelChoiceField(
-        queryset=CustomUser.objects.filter(role='encadreur'),
+    encadreurs = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='enca'),
         empty_label='Sélectionnez un encadreur',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    latitude = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    longitude = forms.FloatField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Stage
@@ -36,8 +47,7 @@ class StageForm(forms.ModelForm):
             #'encadreur': 'Encadreur Académique',
             'attestation_fin_stage': 'Attestation de fin de stage',
             'rapport_stage': 'Rapport de stage',
-            'latitude': 'Latitude',
-            'longitude': 'Longitude',
+            
             'nombre_stagiaires': 'Nombre de stagiaires',
             'date_stage': 'Date de stage',
         }
@@ -48,8 +58,6 @@ class StageForm(forms.ModelForm):
             'contact_telephone': forms.TextInput(attrs={'class': 'form-control'}),
             'attestation_fin_stage': forms.FileInput(attrs={'class': 'form-control-file'}),
             'rapport_stage': forms.FileInput(attrs={'class': 'form-control-file'}),
-            'latitude': forms.NumberInput(attrs={'class': 'form-control'}),
-            'longitude': forms.NumberInput(attrs={'class': 'form-control'}),
             'nombre_stagiaires': forms.NumberInput(attrs={'class': 'form-control'}),
             'date_stage': forms.SelectDateWidget(attrs={'class': 'form-control datepicker', 'placeholder': 'YYYY-MM-DD'}),
         }
@@ -58,10 +66,13 @@ class StageForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['date_stage'].required = True
         encadreur_choices = [
-            (encadreur.id, f"{encadreur} - {encadreur.department}")
+            (encadreur.id, f"{encadreur}_{encadreur.department}")
             for encadreur in CustomUser.objects.filter(role='enca')
         ]
-        self.fields['encadreur'].choices = encadreur_choices
+        self.fields['encadreurs'].choices = encadreur_choices
+        if self.instance and self.instance.cood_gps:
+            self.initial['latitude'] = self.instance.cood_gps.y
+            self.initial['longitude'] = self.instance.cood_gps.x
 
     
         

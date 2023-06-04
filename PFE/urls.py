@@ -17,6 +17,7 @@ urlpatterns = [
     path('stage/modifier/<int:stage_id>/', modifier_stage, name='modifier-stage'),
     path('stage/supprimer/<int:stage_id>/', supprimer_stage, name='supprimer-stage'),
     path('stage/details/<int:stage_id>/', details_stage, name='details-stage'),
+    path('encadreurs-search/', encadreurs_search, name='encadreurs_search'),
 
     
     #path('', include('stage.urls')),

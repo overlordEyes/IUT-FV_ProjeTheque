@@ -6,7 +6,7 @@ from django.contrib import admin
 
 class StageAdmin(admin.ModelAdmin):
     # Liste des champs à afficher dans l'administration
-    list_display = ('owner','entreprise', 'raison_sociale', 'contact_email', 'date_stage', 'encadreur', 'longitude', 'latitude', 'rapport_stage','attestation_fin_stage')
+    list_display = ('owner','entreprise', 'raison_sociale', 'contact_email', 'date_stage', 'encadreur', 'cood_gps', 'rapport_stage','attestation_fin_stage')
 
 # Enregistrer le modèle Stage et la classe StageAdmin pour l'administration
 admin.site.register(Stage, StageAdmin)

@@ -1,102 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container">
-    <h1>Créer un stage</h1>
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="{{ form.entreprise.id_for_label }}">Entreprise</label>
-        {{ form.entreprise }}
-        {% if form.entreprise.errors %}
-          <small class="form-text text-danger">{{ form.entreprise.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.raison_sociale.id_for_label }}">Raison sociale</label>
-        {{ form.raison_sociale }}
-        {% if form.raison_sociale.errors %}
-          <small class="form-text text-danger">{{ form.raison_sociale.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.contact_email.id_for_label }}">Contact Email</label>
-        {{ form.contact_email }}
-        {% if form.contact_email.errors %}
-          <small class="form-text text-danger">{{ form.contact_email.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.contact_telephone.id_for_label }}">Contact Téléphone</label>
-        {{ form.contact_telephone }}
-        {% if form.contact_telephone.errors %}
-          <small class="form-text text-danger">{{ form.contact_telephone.errors }}</small>
-        {% endif %}
-      </div>
-     <div class="form-group">
-  <label for="id_encadreur">Encadreur :</label>
-  {{ form.encadreur }}
-</div>
+  <h1>Créer un stage</h1>
+  <form method="post" enctype="multipart/form-data" class="my-4">
+    {% csrf_token %}
+    {{ form.as_p }}
 
+    <div class="form-group">
+      <div id="location-error" class="text-danger" style="display: none;">Erreur de géolocalisation</div>
+      <div id="location-success" class="text-success" style="display: none;">Géolocalisation réussie</div>
+    </div>
 
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
 
-      <div class="form-group">
-        <label for="{{ form.attestation_fin_stage.id_for_label }}">Attestation de fin de stage</label>
-        {{ form.attestation_fin_stage }}
-        {% if form.attestation_fin_stage.errors %}
-          <small class="form-text text-danger">{{ form.attestation_fin_stage.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.rapport_stage.id_for_label }}">Rapport de stage</label>
-        {{ form.rapport_stage }}
-        {% if form.rapport_stage.errors %}
-          <small class="form-text text-danger">{{ form.rapport_stage.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.date_stage.id_for_label }}">Date du stage</label>
-        <div class="input-group date" id="datePicker" data-target-input="nearest">
-          {{ form.date_stage }}
-        </div>
-        {% if form.date_stage.errors %}
-          <small class="form-text text-danger">{{ form.date_stage.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.longitude.id_for_label }}">Longitude</label>
-        {{ form.longitude }}
-        {% if form.longitude.errors %}
-          <small class="form-text text-danger">{{ form.longitude.errors }}</small>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.latitude.id_for_label }}">Latitude</label>
-        {{ form.latitude }}
-        {% if form.latitude.errors %}
-          <small class="form-text text-danger">{{ form.latitude.errors }}</small>
-        {% endif %}
-      </div>
-      <button type="submit" class="btn btn-primary">Enregistrer</button>
-    </form>
-  </div>
+    <button type="button" id="get-location-button" class="btn btn-primary">Géolocalisation</button>
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+  </form>
+  
 
   <script>
-    $(document).ready(function () {
-      $('datePicker').datetimepicker({
-        format: 'YYYY-MM-DD',
-        icons: {
-          time: 'fa fa-clock',
-          date: 'fa fa-calendar',
-          up: 'fa fa-chevron-up',
-          down: 'fa fa-chevron-down',
-          previous: 'fa fa-chevron-left',
-          next: 'fa fa-chevron-right',
-          today: 'fa fa-calendar-check-o',
-          clear: 'fa fa-trash',
-          close: 'fa fa-times'
-        }
-      });
-    });
+    
+    // Fonction pour afficher le message de confirmation de la géolocalisation réussie en vert
+    function showLocationSuccess() {
+      document.getElementById("location-success").style.display = "block";
+    }
+
+    // Fonction pour afficher le message d'erreur de la géolocalisation en rouge
+    function showLocationError() {
+      document.getElementById("location-error").style.display = "block";
+    }
+
+    // Fonction pour obtenir les coordonnées GPS et les afficher dans les champs cachés
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+            showLocationSuccess();
+          },
+          function(error) {
+            showLocationError();
+          }
+        );
+      } else {
+        showLocationError();
+      }
+    }
+
+    // Ajoutez un écouteur d'événements pour le bouton de géolocalisation
+    document.getElementById("get-location-button").addEventListener("click", getLocation);
   </script>
 {% endblock %}

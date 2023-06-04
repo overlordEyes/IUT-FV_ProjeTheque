@@ -33,8 +33,8 @@
               <strong>Cursus:</strong> {{ user.get_cursus_display }}
             </li>
             {% if user.type_utilisateur == 'et' %}
-            <li class="list-group-item">
-                <strong>Encadreur : </strong> {{ user.stage.encadreur }}
+            <li class="list-group-item"> 
+               <strong>Encadreur : </strong> {{ user.stage.encadreur}}
             </li>
             {% endif %}
             {% elif user.type_utilisateur == 'ad' %}

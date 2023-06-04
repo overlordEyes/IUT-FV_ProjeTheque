@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from utilisateur.models import Stage
 from django.http import HttpResponseForbidden
+from django.contrib.gis.geos import Point
+from .models import CustomUser
 
 def inscription(request):
     if request.method == 'POST':
@@ -64,7 +66,7 @@ def connexion(request):
     return render(request, 'connexion.html', {'form': form})
 
 
-@login_required(login_url='login')
+@login_required(login_url='connexion')
 def profile(request):
     user = request.user
     context = {
@@ -126,6 +128,9 @@ def edit_profil(request):
 
 @login_required(login_url='connexion')
 def creer_stage(request):
+    encadreurs = CustomUser.objects.filter(role='enca')
+    context = {'encadreurs': encadreurs}
+    render(request, 'creer_stage.html', context)
     user = request.user
     if user.type_utilisateur != 'et':
         # Rediriger ou renvoyer une réponse d'interdiction d'accès
@@ -137,6 +142,16 @@ def creer_stage(request):
             stage = form.save(commit=False)
             stage.etudiant = user.nom  # Associer le nom de l'utilisateur courant au champ etudiant
             stage.owner = user.username 
+            # encadreur
+           
+            latitude = form.cleaned_data['latitude']
+            longitude = form.cleaned_data['longitude']
+            
+            # Créer un objet Point à partir des coordonnées
+            cood_gps = Point(longitude, latitude)
+
+            # Assigner la valeur de cood_gps au champ correspondant
+            stage.cood_gps = cood_gps
             stage.save()
             user.stage = stage
             user.save()
@@ -187,3 +202,12 @@ def supprimer_stage(request, stage_id):
         return redirect('profile')
     
     return render(request, 'supprimer_stage.html', {'stage': stage})
+
+
+
+
+@login_required(login_url='connexion')
+def encadreurs_search(request):
+    encadreurs = CustomUser.objects.filter(role='enca')
+    context = {'encadreurs': encadreurs}
+    return render(request, 'votre_template.html', context)

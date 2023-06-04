@@ -2,12 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.urls import reverse
 from datetime import date
-
-
-def generate_filename(instance, filename):
-    extension = filename.split('.')[-1]  # Récupère l'extension du fichier
-    unique_filename = f'{uuid.uuid4()}.{extension}'  # Génère un nom unique avec l'extension
-    return f'media/photos_profil/{unique_filename}'
+from django.contrib.gis.db import models
 
 
 def get_stage_url(self):
@@ -18,27 +13,31 @@ def get_stage_url(self):
                 return reverse('creer_stage')
         return ''
 
+from django.contrib.gis.db import models
 
-   
+def generate_filename(instance, filename):
+    extension = filename.split('.')[-1]
+    unique_filename = f'{uuid.uuid4()}.{extension}'
+    return f'media/photos_profil/{unique_filename}'
+
 class Stage(models.Model):
     entreprise = models.CharField(max_length=255)
     raison_sociale = models.CharField(max_length=255)
     contact_email = models.EmailField(max_length=255)
     contact_telephone = models.CharField(max_length=20)
     attestation_fin_stage = models.FileField(upload_to='attestations/', null=True, blank=True)
-    
-    # Référence à un CustomUser avec type_utilisateur="ad" pour administrateur
+    cood_gps = models.PointField(null=True, blank=True)  # Ajout des options null=True, blank=True
     rapport_stage = models.FileField(upload_to='rapports/', null=True, blank=True)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     nombre_stagiaires = models.PositiveIntegerField(null=True, blank=True)
     encadreur = models.CharField(max_length=255, blank=False)
-    #sysenc = models.CharField(max_length=255, blank=False, default="null")
     owner = models.CharField(max_length=255, blank=False, default="pas de proprietaire")
     date_stage = models.DateField(null=False, blank=False, default=date.today)
 
     def __str__(self):
         return self.entreprise
+
+   
+
 
 
 class CustomUser(AbstractUser):

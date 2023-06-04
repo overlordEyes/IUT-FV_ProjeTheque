@@ -1,0 +1,92 @@
+-- database: database.db
+-- Creation bd voiture
+create type tvoiture as object(
+    marque varchar2(15),
+    typev varchar2(15),
+    couleur varchar2(20)
+);
+-- creation du type enfant
+create type tenfant as object(
+    prenom varchar2(15),
+    age number(10)
+);
+
+--  creation du type collection voiture
+create type lvoitures as table of tvoiture;
+--  creation du type collection enfant
+create type lenfants as table of tenfant;
+--  creation du type personne
+create type tpersonne as object(
+    nss number(15),
+    nom varchar2(15),
+    adresse varchar2(80),
+    enfants lenfants,
+    voitures lvoitures
+);
+
+-- creation d'une collection de personnes
+create table personnes of tpersonne
+nested table enfants store as lesenfants,
+nested table voitures store as lesvoitures;
+
+
+
+create type tvoiture as object(
+    marque varchar2(15),
+    typev varchar2(15),
+    couleur varchar2(20)
+);
+
+create type tenfant as object(
+    prenom varchar2(15),
+    age number(10)
+);
+
+
+create lvoitures as table of tvoiture;
+
+create lenfants as table of tenfant;
+
+create type tpersonne as object(
+    nss number(15),
+    nom varchar2(15),
+    adresse varchar2(80),
+    enfants lenfants,
+    voitures lvoitures
+);
+
+create table personnes of tpersonne
+nested table enfants store as lesenfants;
+nested table voitures store as lesvoitures;
+
+create table Fournisseurs2 of fournisseur
+nested table Lproduits store as lesproduits;
+create sequence p start with 1;
+
+insert into Fournisseurs values (
+   fournisseur(
+            'f.nextval',
+            'fokou',
+            'douala',
+            Lproduits(
+                'p.nextval',
+                'paracetamol',
+                50
+            )
+
+   )
+);
+
+create type fournisseur as object(
+    Id_fournisseur number(15),
+    nom varchar2(15),
+    Adresse varchar2(20),
+    Lproduits produits
+);
+
+create table Fournisseurs4 of fournisseur
+nested table Lproduits store as leproduits;
+
+insert into Fournisseurs4 values ( fournisseur('f.next', 'fokou', 'bandjoun', Lproduits(produits('p.nextval','condom delux',500))));
+create table Fournisseurs4 of fournisseur
+nested table Lproduits store as leproduits;
